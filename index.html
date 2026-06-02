@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Cantina del Sol - Menú Digital</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-decoracion dec-guitarra"></div>
+    <div class="bg-decoracion dec-calavera"></div>
+    <div class="bg-decoracion dec-sombrero"></div>
+
+    <section id="pantalla-home" class="pantalla active">
+        <header class="hero">
+            <div class="logo-placeholder">☀️</div>
+            <h1>La Cantina del Sol</h1>
+            <p class="eslogan">"¡Donde el sabor amanece y la fiesta nunca termina!"</p>
+            <div class="flecha-bajar">🔽 Desliza hacia abajo para ver el menú</div>
+        </header>
+
+        <main class="home-main">
+            <h2>¿Qué se le antoja, carnal?</h2>
+            
+            <div class="grid-categorias">
+                <button class="btn-ventana" data-cat="picante">🌶️ Picante</button>
+                <button class="btn-ventana" data-cat="vegetariano">🌱 Vegetariano</button>
+                <button class="btn-ventana" data-cat="clasicos">🌮 Clásicos</button>
+                <button class="btn-ventana" data-cat="infantil">👶 Infantil</button>
+                <button class="btn-ventana btn-full" data-cat="bebidas">🍹 Bebidas</button>
+            </div>
+
+            <button id="btn-ir-orden" class="btn-completar-orden">
+                📋 Completar Orden <span id="contador-total">(0)</span>
+            </button>
+        </main>
+    </section>
+
+    <section id="pantalla-menu" class="pantalla">
+        <header class="menu-header">
+            <button id="btn-volver-home" class="btn-volver">⬅️ Volver al inicio</button>
+            <h2 id="titulo-categoria">Categoría</h2>
+        </header>
+        <div id="lista-platillos" class="lista-platillos">
+            </div>
+    </section>
+
+    <section id="pantalla-resumen" class="pantalla">
+        <header class="menu-header">
+            <button id="btn-volver-de-resumen" class="btn-volver">⬅️ Seguir ordenando</button>
+            <h2>Tu Pedido 📝</h2>
+        </header>
+        
+        <div class="resumen-container">
+            <p class="instruccion-mesero">¡Listo, carnal! Muéstrale esta pantalla a tu mesero para levantar tu orden.</p>
+            <div id="lista-resumen" class="lista-resumen">
+                </div>
+            <div class="total-box">
+                <h3>Total estimado: <span id="precio-total">$0.00</span></h3>
+            </div>
+        </div>
+    </section>
+
+    <script src="data.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
