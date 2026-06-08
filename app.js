@@ -1,4 +1,4 @@
-// Estado global de la aplicación
+// Estado global de la aplicación (La orden ahora guardará objetos con cantidad)
 let orden = [];
 
 // Elementos de las Pantallas
@@ -17,7 +17,7 @@ const contadorTotalSpan = document.getElementById('contador-total');
 function cambiarPantalla(pantallaMostrar) {
     document.querySelectorAll('.pantalla').forEach(p => p.classList.remove('active'));
     pantallaMostrar.classList.add('active');
-    window.scrollTo(0,0); // Sube la pantalla automáticamente
+    window.scrollTo(0,0);
 }
 
 // Botones de las Ventanas de Categoría
@@ -44,7 +44,9 @@ function renderizarMenu(categoria) {
     const platosFiltrados = menuData.filter(p => p.categoria === categoria);
 
     platosFiltrados.forEach(plato => {
-        const estaSeleccionado = orden.some(item => item.id === plato.id);
+        // Buscamos si el plato ya está en la orden para saber su cantidad
+        const itemEnOrden = orden.find(item => item.id === plato.id);
+        const cantidad = itemEnOrden ? itemEnOrden.cantidad : 0;
         
         const card = document.createElement('div');
         card.className = 'plato-card';
@@ -59,10 +61,18 @@ function renderizarMenu(categoria) {
                 
                 <div class="plato-acciones">
                     <button class="btn-ingredientes" onclick="toggleIngredientes(${plato.id})">🔍 Ver ingredientes</button>
-                    <label class="checkbox-container ${estaSeleccionado ? 'checked' : ''}">
-                        <input type="checkbox" ${estaSeleccionado ? 'checked' : ''} onchange="toggleSeleccionPlato(${plato.id}, this)">
-                        ${estaSeleccionado ? '✅ Seleccionado' : '➕ Seleccionar'}
-                    </label>
+                    
+                    <div class="selector-cantidad-container">
+                        ${cantidad === 0 ? `
+                            <button class="btn-agregar-inicial" onclick="modificarCantidad(${plato.id}, 1)">➕ Seleccionar</button>
+                        ` : `
+                            <div class="control-contador">
+                                <button class="btn-contador menos" onclick="modificarCantidad(${plato.id}, -1)">-</button>
+                                <span class="numero-cantidad">${cantidad}</span>
+                                <button class="btn-contador mas" onclick="modificarCantidad(${plato.id}, 1)">+</button>
+                            </div>
+                        `}
+                    </div>
                 </div>
                 <div id="ingredientes-${plato.id}" class="ingredientes-box">
                     <p><strong>Ingredientes:</strong> ${plato.ingredientes}</p>
@@ -73,23 +83,36 @@ function renderizarMenu(categoria) {
     });
 }
 
-// --- LÓGICA DE SELECCIÓN ---
-function toggleSeleccionPlato(id, checkbox) {
+// --- LÓGICA DE CONTROL DE CANTIDADES (SUMAR / RESTAR) ---
+function modificarCantidad(id, cambio) {
     const plato = menuData.find(p => p.id === id);
-    const label = checkbox.parentElement;
+    const itemEnOrden = orden.find(item => item.id === id);
 
-    if (checkbox.checked) {
-        orden.push(plato);
-        label.classList.add('checked');
-        label.innerHTML = `<input type="checkbox" checked onchange="toggleSeleccionPlato(${id}, this)"> ✅ Seleccionado`;
-    } else {
-        orden = orden.filter(item => item.id !== id);
-        label.classList.remove('checked');
-        label.innerHTML = `<input type="checkbox" onchange="toggleSeleccionPlato(${id}, this)"> ➕ Seleccionar`;
+    if (itemEnOrden) {
+        // Si ya existe, sumamos o restamos
+        itemEnOrden.cantidad += cambio;
+        
+        // Si la cantidad llega a 0, lo eliminamos de la orden
+        if (itemEnOrden.cantidad <= 0) {
+            orden = orden.filter(item => item.id !== id);
+        }
+    } else if (cambio > 0) {
+        // Si no existe y le dieron a "Seleccionar" (+1), lo agregamos con cantidad 1
+        orden.push({ ...plato, cantidad: 1 });
     }
+
+    // Volvemos a dibujar el menú de la categoría actual para actualizar los números en pantalla
+    const categoriaActual = tituloCategoria.textContent.replace('Menú ', '').toLowerCase();
+    renderizarMenu(categoriaActual);
     
-    // Actualizar contador del Home
-    contadorTotalSpan.textContent = `(${orden.length})`;
+    // Actualizamos el botón del Home
+    actualizarContadorHome();
+}
+
+// Actualiza el número de artículos totales en el Home
+function actualizarContadorHome() {
+    const totalArticulos = orden.reduce((acumulado, item) => acumulado + item.cantidad, 0);
+    contadorTotalSpan.textContent = `(${totalArticulos} ${totalArticulos === 1 ? 'artículo' : 'artículos'})`;
 }
 
 // Mostrar/Ocultar ingredientes
@@ -98,10 +121,10 @@ function toggleIngredientes(id) {
     box.classList.toggle('open');
 }
 
-// --- RENDERIZAR PANTALLA RESUMEN ---
+// --- RENDERIZAR PANTALLAS DE RESUMEN (PARA EL MESERO) ---
 function renderizarResumen() {
     listaResumen.innerHTML = '';
-    let total = 0;
+    let totalGeneral = 0;
 
     if (orden.length === 0) {
         listaResumen.innerHTML = '<p class="orden-vacia">No has seleccionado ningún platillo todavía, carnal. 🌮</p>';
@@ -110,15 +133,20 @@ function renderizarResumen() {
     }
 
     orden.forEach(plato => {
-        total += plato.precio;
+        const subtotalPlato = plato.precio * plato.cantidad;
+        totalGeneral += subtotalPlato;
+        
         const item = document.createElement('div');
         item.className = 'resumen-item';
         item.innerHTML = `
-            <span>${plato.nombre}</span>
-            <strong>$${plato.precio.toFixed(2)}</strong>
+            <div class="resumen-item-izq">
+                <span class="resumen-cantidad">${plato.cantidad}x</span>
+                <span class="resumen-nombre">${plato.nombre}</span>
+            </div>
+            <strong class="resumen-subtotal">$${subtotalPlato.toFixed(2)}</strong>
         `;
         listaResumen.appendChild(item);
     });
 
-    precioTotalSpan.textContent = `$${total.toFixed(2)}`;
+    precioTotalSpan.textContent = `$${totalGeneral.toFixed(2)}`;
 }
