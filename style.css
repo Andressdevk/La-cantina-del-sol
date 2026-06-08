@@ -197,22 +197,93 @@ h2 {
     font-size: 0.85rem;
 }
 
-/* Casillas de selección */
-.checkbox-container {
+/* --- NUEVOS ESTILOS PARA CONTADORES DE CANTIDAD --- */
+.selector-cantidad-container {
+    min-width: 140px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* Botón inicial de Seleccionar */
+.btn-agregar-inicial {
     background: rgba(255, 255, 255, 0.1);
-    padding: 8px 15px;
+    border: 1px solid #00ffcc; /* Color verde/cian */
+    color: #00ffcc;
+    padding: 8px 16px;
     border-radius: 20px;
     font-size: 0.9rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+.btn-agregar-inicial:active {
+    background: #00ffcc;
+    color: #2e114d;
+}
+
+/* El contenedor del contador activo (- 1 +) */
+.control-contador {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid #ffcc00; /* Amarillo */
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.btn-contador {
+    background: none;
+    border: none;
+    color: #ffcc00;
+    font-size: 1.2rem;
+    font-weight: bold;
+    width: 35px;
+    height: 35px;
     cursor: pointer;
     display: flex;
     align-items: center;
-    border: 1px solid transparent;
+    justify-content: center;
+    transition: background 0.2s;
 }
-.checkbox-container input { display: none; }
-.checkbox-container.checked {
-    background: #00ffcc;
-    color: #2e114d;
+.btn-contador:active {
+    background: rgba(255, 204, 0, 0.2);
+}
+
+.numero-cantidad {
     font-weight: bold;
+    color: #ffffff;
+    padding: 0 10px;
+    min-width: 25px;
+    text-align: center;
+    font-size: 1rem;
+}
+
+/* Estilos extras para la lista de resumen final */
+.resumen-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 0;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.resumen-item-izq {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.resumen-cantidad {
+    color: #00ffcc; /* Resalta la cantidad en verde */
+    font-weight: bold;
+    background: rgba(0, 255, 204, 0.1);
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 0.9rem;
+}
+.resumen-nombre {
+    font-size: 1rem;
+}
+.resumen-subtotal {
+    color: #ffffff;
 }
 
 /* Desplegable de ingredientes */
