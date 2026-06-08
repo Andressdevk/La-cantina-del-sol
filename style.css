@@ -14,28 +14,28 @@ body {
     position: relative;
 }
 
-/* --- IMÁGENES DE FONDO DECORATIVAS --- */
-/* --- NUEVA CONFIGURACIÓN DEL FONDO (EFECTO ESTAMPADO) --- */
+/* --- CONFIGURACIÓN DEL FONDO CON ESTAMPADO (CORREGIDO) --- */
 body {
-    background-color: #2e114d; /* El morado base predominante */
+    background-color: #2e114d; /* El morado base */
     
-    /* Cargamos las 3 imágenes como capas de fondo simultáneas */
+    /* Pusimos un filtro morado transparente (rgba) arriba del todo.
+       El número '0.88' controla qué tan oscuro se ve el fondo. 
+       Si lo bajas a 0.80 el estampado se verá más brillante; si lo subes a 0.95 se verá más sutil.
+    */
     background-image: 
+        linear-gradient(rgba(46, 17, 77, 0.88), rgba(46, 17, 77, 0.88)), 
         url('img/GuitarraMexicana.png'), 
         url('img/calavera.png'), 
         url('img/sombrero.png');
     
-    /* Indicamos que se repitan en mosaico en todo el sitio */
-    background-repeat: repeat, repeat, repeat;
+    /* Le decimos al filtro que no se repita, pero a las 3 imágenes sí */
+    background-repeat: no-repeat, repeat, repeat, repeat;
     
-    /* Ajustamos el tamaño de cada elemento del estampado (ej. 60px de ancho) */
-    background-size: 60px 60px, 55px 55px, 65px 65px;
+    /* El filtro cubre toda la pantalla (container) y las imágenes se quedan al tamaño del estampado */
+    background-size: cover, 70px 70px, 65px 65px, 75px 75px;
     
-    /* Desplazamos los puntos de inicio de cada imagen para que se mezclen y no se tapen entre sí */
-    background-position: 0px 0px, 40px 50px, 80px 110px;
-    
-    /* TRUCO PRO: Creamos una capa de fusión para darles opacidad (el 0.12 controla qué tan transparente se ve) */
-    background-blend-mode: soft-light; 
+    /* Posiciones en cuadrícula para que se intercalen perfectamente */
+    background-position: center, 0px 0px, 45px 50px, 90px 100px;
     
     color: #ffffff;
     min-height: 100vh;
