@@ -15,19 +15,32 @@ body {
 }
 
 /* --- IMÁGENES DE FONDO DECORATIVAS --- */
-.bg-decoracion {
-    position: fixed;
-    width: 120px;
-    height: 120px;
-    background-size: contain;
-    background-repeat: no-repeat;
-    opacity: 0.15; /* Sutiles para que no estorben */
-    z-index: -1;
-    pointer-events: none;
+/* --- NUEVA CONFIGURACIÓN DEL FONDO (EFECTO ESTAMPADO) --- */
+body {
+    background-color: #2e114d; /* El morado base predominante */
+    
+    /* Cargamos las 3 imágenes como capas de fondo simultáneas */
+    background-image: 
+        url('img/GuitarraMexicana.png'), 
+        url('img/calavera.png'), 
+        url('img/sombrero.png');
+    
+    /* Indicamos que se repitan en mosaico en todo el sitio */
+    background-repeat: repeat, repeat, repeat;
+    
+    /* Ajustamos el tamaño de cada elemento del estampado (ej. 60px de ancho) */
+    background-size: 60px 60px, 55px 55px, 65px 65px;
+    
+    /* Desplazamos los puntos de inicio de cada imagen para que se mezclen y no se tapen entre sí */
+    background-position: 0px 0px, 40px 50px, 80px 110px;
+    
+    /* TRUCO PRO: Creamos una capa de fusión para darles opacidad (el 0.12 controla qué tan transparente se ve) */
+    background-blend-mode: soft-light; 
+    
+    color: #ffffff;
+    min-height: 100vh;
+    overflow-x: hidden;
 }
-.dec-guitarra { top: 5%; left: -20px; background-image: url('img/GuitarraMexicana.png'); transform: rotate(15deg); }
-.dec-calavera { top: 40%; right: -30px; background-image: url('img/calavera.png'); transform: rotate(-10deg); }
-.dec-sombrero { bottom: 10%; left: -10px; background-image: url('img/sombrero.png'); transform: rotate(-20deg); }
 
 /* --- MANEJO DE PANTALLAS --- */
 .pantalla {
